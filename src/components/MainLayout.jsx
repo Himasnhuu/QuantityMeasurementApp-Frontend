@@ -6,7 +6,7 @@ function MainLayout() {
   return (
     <>
       <Navbar />
-      <Box sx={{ p: 3 }}>
+      <Box>
         <Outlet />
       </Box>
     </>

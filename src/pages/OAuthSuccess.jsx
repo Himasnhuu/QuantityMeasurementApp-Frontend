@@ -11,9 +11,7 @@ function OAuthSuccess() {
 
     if (token) {
       saveToken(token);
-
-      // ✅ FIXED REDIRECT
-      navigate("/");
+      navigate("/dashboard");
     } else {
       navigate("/");
     }

@@ -2,9 +2,6 @@ import { useMemo, useState } from "react";
 import {
   Box,
   Typography,
-  Card,
-  CardActionArea,
-  CardContent,
   Grid,
   ToggleButton,
   ToggleButtonGroup,
@@ -17,6 +14,8 @@ import {
   CircularProgress,
   Divider,
 } from "@mui/material";
+import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { alpha } from "@mui/material/styles";
 import { measurementTypes } from "../utils/unitConfig";
 import {
   convertMeasurement,
@@ -196,8 +195,8 @@ function Dashboard() {
   const renderResult = () => {
     if (typeof result !== "boolean" && !result) {
       return (
-        <Typography color="text.secondary">
-          Result will appear here after calculation.
+        <Typography color="text.secondary" sx={{ fontStyle: "italic" }}>
+          Ready when you are - calculate to see the result.
         </Typography>
       );
     }
@@ -224,7 +223,6 @@ function Dashboard() {
     //   );
     // }
     // Check if it's a boolean OR a string that says "false"
-    console.log("Result Value:", result, "Type:", typeof result);
     if (
       typeof result === "boolean" ||
       result === "false" ||
@@ -253,413 +251,528 @@ function Dashboard() {
   return (
     <Box
       sx={{
-        minHeight: "calc(100vh - 64px)",
+        minHeight: "calc(100vh - 72px)",
         display: "flex",
-        flexDirection: "column", // This stacks items vertically
-        justifyContent: "center", // This centers items vertically in a column
-        alignItems: "center", // This centers items horizontally in a column
-        px: 2,
-        py: 4,
-        backgroundColor: "#f7f9fc",
+        justifyContent: "center",
+        px: { xs: 1.5, md: 3 },
+        py: { xs: 2, md: 4 },
+        color: "#d9dff4",
+        background:
+          "radial-gradient(circle at 20% 85%, rgba(73, 78, 255, 0.22) 0%, rgba(8, 12, 28, 0) 45%), radial-gradient(circle at 72% 18%, rgba(119, 136, 255, 0.28) 0%, rgba(8, 12, 28, 0) 38%), linear-gradient(160deg, #060b1e 0%, #050919 45%, #040815 100%)",
       }}
     >
-      {/* SECTION 1 — CHOOSE TYPE */}
-      <Typography variant="subtitle1" fontWeight="bold" mb={2}>
-        CHOOSE TYPE
-      </Typography>
-
-      {/* <Grid container spacing={3} mb={4}>
-        {measurementTypes.map((type) => (
-          <Grid item xs={12} sm={6} md={3} key={type.key}>
-            <Card
-              sx={{
-                border:
-                  selectedType === type.key
-                    ? "2px solid #00d4b8"
-                    : "1px solid #eee",
-                borderRadius: 4,
-                backgroundColor:
-                  selectedType === type.key ? "#f3fbfb" : "white",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-              }}
-            >
-              <CardActionArea onClick={() => handleTypeChange(type.key)}>
-                <CardContent sx={{ textAlign: "center", py: 5 }}>
-                  <Typography variant="h3" mb={2}>
-                    {type.icon}
-                  </Typography>
-                  <Typography variant="h6" fontWeight="bold">
-                    {type.label}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid> */}
-
-      <Grid container spacing={3} mb={4} justifyContent="center">
-        {measurementTypes.map((type) => (
-          <Grid
-            item
-            key={type.key}
+      <Box sx={{ width: "min(1040px, 100%)", mx: "auto" }}>
+        <Box textAlign="center" mb={2.15}>
+          <Typography
             sx={{
-              display: "flex",
-              justifyContent: "center",
-              flexBasis: "260px", // 🔥 forces equal width
-              maxWidth: "260px", // 🔥 prevents stretching
+              fontFamily: "'Playfair Display', serif",
+              fontWeight: 600,
+              letterSpacing: "0.01em",
+              color: "#f2f4ff",
+              fontSize: { xs: "2rem", md: "2.7rem" },
+              lineHeight: 1.1,
             }}
           >
-            <Card
-              sx={{
-                width: "260px", // 🔥 fixed width
-                height: "220px", // 🔥 fixed height
-                display: "flex",
-                flexDirection: "column",
-                border:
-                  selectedType === type.key
-                    ? "2px solid #00d4b8"
-                    : "1px solid #eee",
-                borderRadius: 4,
-                backgroundColor:
-                  selectedType === type.key ? "#f3fbfb" : "white",
-                boxShadow: "0 4px 12px rgba(0,0,0,0.05)",
-              }}
-            >
-              <CardActionArea
+            Measure. Convert. Simplify.
+          </Typography>
+          <Typography sx={{ color: "rgba(210,220,255,0.82)", mt: 0.55, fontSize: "0.83rem" }}>
+            Precision conversion workspace
+          </Typography>
+        </Box>
+
+        <Typography
+          variant="subtitle2"
+          sx={{
+            mb: 1.3,
+            textAlign: "center",
+            color: "rgba(202,213,255,0.78)",
+            fontWeight: 500,
+            letterSpacing: "0.14em",
+            fontSize: "0.82rem",
+          }}
+        >
+          MEASUREMENT TYPE
+        </Typography>
+
+        <Grid container spacing={1.8} mb={2.3} justifyContent="center">
+          {measurementTypes.map((type) => (
+            <Grid item xs={6} sm={6} md="auto" key={type.key}>
+              <Button
                 onClick={() => handleTypeChange(type.key)}
                 sx={{
-                  flexGrow: 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
+                  width: { xs: "100%", md: 248 },
+                  minWidth: { md: 248 },
+                  height: { xs: 82, md: 144 },
+                  borderRadius: "44px",
+                  textTransform: "none",
+                  color: "#eef1ff",
+                  fontSize: { xs: "1.15rem", md: "1.72rem" },
+                  fontWeight: 700,
+                  border: `1px solid ${
+                    selectedType === type.key
+                      ? "rgba(129,149,255,0.9)"
+                      : "rgba(130,146,214,0.2)"
+                  }`,
+                  background:
+                    selectedType === type.key
+                      ? "linear-gradient(135deg, rgba(70,86,164,0.62), rgba(53,62,111,0.5))"
+                      : "linear-gradient(120deg, rgba(23,31,59,0.62), rgba(30,37,68,0.4))",
+                  boxShadow:
+                    selectedType === type.key
+                      ? "0 16px 34px rgba(72, 98, 244, 0.35), inset 0 1px 0 rgba(255,255,255,0.16)"
+                      : "inset 0 1px 0 rgba(255,255,255,0.06)",
+                  backdropFilter: "blur(8px)",
                 }}
               >
-                <CardContent sx={{ textAlign: "center" }}>
-                  <Typography variant="h3" mb={2}>
-                    {type.icon}
-                  </Typography>
-                  <Typography variant="h6" fontWeight="bold">
-                    {type.label}
-                  </Typography>
-                </CardContent>
-              </CardActionArea>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
+                {type.label}
+              </Button>
+            </Grid>
+          ))}
+        </Grid>
 
-      {/* SECTION 2 — CHOOSE ACTION */}
-      <Typography variant="subtitle1" fontWeight="bold" mb={2}>
-        CHOOSE ACTION
-      </Typography>
+        <Typography
+          variant="subtitle2"
+          sx={{
+            mb: 1.8,
+            mt: 0.2,
+            textAlign: "center",
+            color: "rgba(202,213,255,0.78)",
+            fontWeight: 500,
+            letterSpacing: "0.14em",
+            fontSize: "0.82rem",
+          }}
+        >
+          ACTION
+        </Typography>
 
-      <ToggleButtonGroup
-        value={selectedAction}
-        exclusive
-        onChange={handleActionChange}
-        sx={{
-          mb: 4,
-          width: {
-            xs: "100%",
-            sm: "100%",
-            md: "100%",
-            lg: "60%", // reduced by ~40% on large screens
-            xl: "60%",
-          },
-          display: "flex",
-          gap: 2,
-          mx: "auto", // centers it horizontally
-        }}
-      >
-        {availableActions.map((action) => (
-          <ToggleButton
-            key={action}
-            value={action}
-            sx={{
-              flex: 1,
-              py: 1.5,
-              borderRadius: 3,
-              fontWeight: "bold",
-              textTransform: "capitalize",
-              "&.Mui-selected": {
-                backgroundColor: "#4a63f3",
-                color: "white",
-                "&:hover": {
-                  backgroundColor: "#3f56da",
+        <ToggleButtonGroup
+          value={selectedAction}
+          exclusive
+          onChange={handleActionChange}
+          sx={{
+            width: "min(760px, 100%)",
+            mx: "auto",
+            mb: 1.8,
+            display: "grid",
+            gridTemplateColumns: `repeat(${availableActions.length}, minmax(0, 1fr))`,
+            gap: 0.8,
+          }}
+        >
+          {availableActions.map((action) => (
+            <ToggleButton
+              key={action}
+              value={action}
+              sx={{
+                py: 1.02,
+                color: "#d8def7",
+                border: "1px solid rgba(129,146,214,0.25) !important",
+                borderRadius: "20px !important",
+                textTransform: "none",
+                fontSize: "0.92rem",
+                fontWeight: 600,
+                background: "rgba(22,28,52,0.5)",
+                "&.Mui-selected": {
+                  background:
+                    "linear-gradient(135deg, rgba(85,104,194,0.78), rgba(97,111,188,0.68))",
+                  color: "#ffffff",
                 },
+              }}
+            >
+              {formatActionLabel(action)}
+            </ToggleButton>
+          ))}
+        </ToggleButtonGroup>
+
+        <Paper
+          elevation={0}
+          sx={{
+            px: { xs: 1.4, md: 1.8 },
+            py: 1.8,
+            mb: 2.4,
+            borderRadius: "34px",
+            border: "1px solid rgba(124, 141, 215, 0.22)",
+            background:
+              "linear-gradient(120deg, rgba(14,19,38,0.72), rgba(10,14,30,0.66))",
+            boxShadow: "0 20px 50px rgba(6, 10, 30, 0.35)",
+          }}
+        >
+          <Typography
+            sx={{
+              color: "rgba(202,213,255,0.76)",
+              fontSize: "0.86rem",
+              letterSpacing: "0.09em",
+              fontWeight: 600,
+              mb: 1.25,
+              pl: 0.6,
+              fontSize: "0.95rem",
+            }}
+          >
+            MEASUREMENT INPUTS
+          </Typography>
+
+          {selectedAction === "CONVERT" && (
+            <Grid container spacing={1.6} alignItems="stretch" justifyContent="center">
+              <Grid item xs={12} md={5} sx={{ display: "flex" }}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    width: "100%",
+                    p: 1.8,
+                    borderRadius: "28px",
+                    border: "1px solid rgba(117,130,198,0.24)",
+                    background: "rgba(11,17,35,0.58)",
+                  }}
+                >
+                  <Typography sx={{ color: "#b8c3ec", mb: 1, fontSize: "0.94rem" }}>
+                    FROM
+                  </Typography>
+                  <TextField
+                    placeholder="Value"
+                    type="number"
+                    fullWidth
+                    margin="normal"
+                    value={formData.value1}
+                    onChange={(e) => handleChange("value1", e.target.value)}
+                    sx={fieldSx}
+                  />
+                  <TextField
+                    select
+                    label="From Unit"
+                    fullWidth
+                    margin="normal"
+                    value={formData.unit1}
+                    onChange={(e) => handleChange("unit1", e.target.value)}
+                    sx={fieldSx}
+                  >
+                    {availableUnits.map((unit) => (
+                      <MenuItem key={unit} value={unit}>
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} md={1} sx={{ display: "flex", alignItems: "center" }}>
+                <Box
+                  sx={{
+                    width: 36,
+                    height: 36,
+                    borderRadius: "50%",
+                    mx: "auto",
+                    border: "1px solid rgba(140,153,210,0.35)",
+                    bgcolor: "rgba(29,36,66,0.6)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    color: "#dce3ff",
+                  }}
+                >
+                  <ArrowForwardIcon fontSize="small" />
+                </Box>
+              </Grid>
+
+              <Grid item xs={12} md={5} sx={{ display: "flex" }}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    width: "100%",
+                    height: "100%",
+                    p: 1.8,
+                    borderRadius: "28px",
+                    border: "1px solid rgba(117,130,198,0.24)",
+                    background: "rgba(11,17,35,0.58)",
+                  }}
+                >
+                  <Typography sx={{ color: "#b8c3ec", mb: 1, fontSize: "0.94rem" }}>
+                    TO
+                  </Typography>
+                  <Typography
+                    sx={{
+                      color: "rgba(216,226,255,0.9)",
+                      fontSize: "0.82rem",
+                      mb: 0.5,
+                      ml: 0.7,
+                    }}
+                  >
+                    Target Unit
+                  </Typography>
+                  <TextField
+                    select
+                    fullWidth
+                    margin="normal"
+                    value={formData.resultUnit}
+                    onChange={(e) => handleChange("resultUnit", e.target.value)}
+                    sx={fieldSx}
+                  >
+                    {availableUnits.map((unit) => (
+                      <MenuItem key={unit} value={unit}>
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Paper>
+              </Grid>
+            </Grid>
+          )}
+
+          {selectedAction === "COMPARE" && (
+            <Grid container spacing={1.5} alignItems="stretch" justifyContent="center">
+              <Grid item xs={12} md={5}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 1.8,
+                    borderRadius: "28px",
+                    border: "1px solid rgba(117,130,198,0.24)",
+                    background: "rgba(11,17,35,0.58)",
+                    height: "100%",
+                  }}
+                >
+                  <Typography sx={{ color: "#b8c3ec", mb: 1, fontSize: "0.94rem" }}>
+                    VALUE 1
+                  </Typography>
+                  <TextField
+                    placeholder="Value 1"
+                    type="number"
+                    fullWidth
+                    margin="normal"
+                    value={formData.value1}
+                    onChange={(e) => handleChange("value1", e.target.value)}
+                    sx={fieldSx}
+                  />
+                  <TextField
+                    select
+                    label="Unit 1"
+                    fullWidth
+                    margin="normal"
+                    value={formData.unit1}
+                    onChange={(e) => handleChange("unit1", e.target.value)}
+                    sx={fieldSx}
+                  >
+                    {availableUnits.map((unit) => (
+                      <MenuItem key={unit} value={unit}>
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} md={5}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 1.8,
+                    borderRadius: "28px",
+                    border: "1px solid rgba(117,130,198,0.24)",
+                    background: "rgba(11,17,35,0.58)",
+                    height: "100%",
+                  }}
+                >
+                  <Typography sx={{ color: "#b8c3ec", mb: 1, fontSize: "0.94rem" }}>
+                    VALUE 2
+                  </Typography>
+                  <TextField
+                    placeholder="Value 2"
+                    type="number"
+                    fullWidth
+                    margin="normal"
+                    value={formData.value2}
+                    onChange={(e) => handleChange("value2", e.target.value)}
+                    sx={fieldSx}
+                  />
+                  <TextField
+                    select
+                    label="Unit 2"
+                    fullWidth
+                    margin="normal"
+                    value={formData.unit2}
+                    onChange={(e) => handleChange("unit2", e.target.value)}
+                    sx={fieldSx}
+                  >
+                    {availableUnits.map((unit) => (
+                      <MenuItem key={unit} value={unit}>
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Paper>
+              </Grid>
+            </Grid>
+          )}
+
+          {selectedAction === "ARITHMETIC" && (
+            <Grid container spacing={1.5} alignItems="stretch" justifyContent="center">
+              <Grid item xs={12} md={4}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 1.8,
+                    borderRadius: "28px",
+                    border: "1px solid rgba(117,130,198,0.24)",
+                    background: "rgba(11,17,35,0.58)",
+                    height: "100%",
+                  }}
+                >
+                  <Typography sx={{ color: "#b8c3ec", mb: 1, fontSize: "0.94rem" }}>
+                    VALUE 1
+                  </Typography>
+                  <TextField
+                    placeholder="Value 1"
+                    type="number"
+                    fullWidth
+                    margin="normal"
+                    value={formData.value1}
+                    onChange={(e) => handleChange("value1", e.target.value)}
+                    sx={fieldSx}
+                  />
+                  <TextField
+                    select
+                    label="Unit 1"
+                    fullWidth
+                    margin="normal"
+                    value={formData.unit1}
+                    onChange={(e) => handleChange("unit1", e.target.value)}
+                    sx={fieldSx}
+                  >
+                    {availableUnits.map((unit) => (
+                      <MenuItem key={unit} value={unit}>
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} md={2}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 1.8,
+                    borderRadius: "28px",
+                    border: "1px solid rgba(117,130,198,0.24)",
+                    background: "rgba(11,17,35,0.58)",
+                    height: "100%",
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextField
+                    select
+                    label="Operator"
+                    fullWidth
+                    value={formData.operator}
+                    onChange={(e) => handleChange("operator", e.target.value)}
+                    sx={fieldSx}
+                  >
+                    <MenuItem value="ADD">+</MenuItem>
+                    <MenuItem value="SUBTRACT">-</MenuItem>
+                    <MenuItem value="DIVIDE">/</MenuItem>
+                  </TextField>
+                </Paper>
+              </Grid>
+
+              <Grid item xs={12} md={4}>
+                <Paper
+                  elevation={0}
+                  sx={{
+                    p: 1.8,
+                    borderRadius: "28px",
+                    border: "1px solid rgba(117,130,198,0.24)",
+                    background: "rgba(11,17,35,0.58)",
+                    height: "100%",
+                  }}
+                >
+                  <Typography sx={{ color: "#b8c3ec", mb: 1, fontSize: "0.94rem" }}>
+                    VALUE 2
+                  </Typography>
+                  <TextField
+                    placeholder="Value 2"
+                    type="number"
+                    fullWidth
+                    margin="normal"
+                    value={formData.value2}
+                    onChange={(e) => handleChange("value2", e.target.value)}
+                    sx={fieldSx}
+                  />
+                  <TextField
+                    select
+                    label="Unit 2"
+                    fullWidth
+                    margin="normal"
+                    value={formData.unit2}
+                    onChange={(e) => handleChange("unit2", e.target.value)}
+                    sx={fieldSx}
+                  >
+                    {availableUnits.map((unit) => (
+                      <MenuItem key={unit} value={unit}>
+                        {unit}
+                      </MenuItem>
+                    ))}
+                  </TextField>
+                </Paper>
+              </Grid>
+            </Grid>
+          )}
+        </Paper>
+
+        <Box display="flex" justifyContent="center" mb={2.4}>
+          <Button
+            variant="contained"
+            size="large"
+            onClick={handleSubmit}
+            disabled={loading}
+            sx={{
+              minWidth: 126,
+              px: 3.4,
+              py: 1.12,
+              borderRadius: "999px",
+              textTransform: "none",
+              fontWeight: 700,
+              fontSize: "0.95rem",
+              letterSpacing: "0.01em",
+              boxShadow: "0 10px 32px rgba(95, 112, 255, 0.46)",
+              background:
+                "linear-gradient(90deg, rgba(80,107,243,0.95), rgba(132,93,240,0.95))",
+              "&:hover": {
+                background:
+                  "linear-gradient(90deg, rgba(74,100,228,0.95), rgba(123,87,226,0.95))",
               },
             }}
           >
-            {formatActionLabel(action)}
-          </ToggleButton>
-        ))}
-      </ToggleButtonGroup>
+            {loading ? (
+              <CircularProgress size={24} color="inherit" />
+            ) : (
+              "Calculate"
+            )}
+          </Button>
+        </Box>
 
-      {/* SECTION 3 — INPUTS */}
-      <Grid container spacing={3} mb={4}>
-        {/* CONVERT */}
-        {selectedAction === "CONVERT" && (
-          <>
-            <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, borderRadius: 4 }}>
-                <Typography fontWeight="bold" mb={2}>
-                  FROM
-                </Typography>
-
-                <TextField
-                  label="Value"
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                  value={formData.value1}
-                  onChange={(e) => handleChange("value1", e.target.value)}
-                />
-
-                <TextField
-                  select
-                  label="From Unit"
-                  fullWidth
-                  margin="normal"
-                  value={formData.unit1}
-                  onChange={(e) => handleChange("unit1", e.target.value)}
-                >
-                  {availableUnits.map((unit) => (
-                    <MenuItem key={unit} value={unit}>
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, borderRadius: 4 }}>
-                <Typography fontWeight="bold" mb={2}>
-                  TO
-                </Typography>
-
-                <TextField
-                  select
-                  label="Target Unit"
-                  fullWidth
-                  margin="normal"
-                  value={formData.resultUnit}
-                  onChange={(e) => handleChange("resultUnit", e.target.value)}
-                >
-                  {availableUnits.map((unit) => (
-                    <MenuItem key={unit} value={unit}>
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Paper>
-            </Grid>
-          </>
-        )}
-
-        {/* COMPARE */}
-        {selectedAction === "COMPARE" && (
-          <>
-            <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, borderRadius: 4 }}>
-                <Typography fontWeight="bold" mb={2}>
-                  VALUE 1
-                </Typography>
-
-                <TextField
-                  label="Value 1"
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                  value={formData.value1}
-                  onChange={(e) => handleChange("value1", e.target.value)}
-                />
-
-                <TextField
-                  select
-                  label="Unit 1"
-                  fullWidth
-                  margin="normal"
-                  value={formData.unit1}
-                  onChange={(e) => handleChange("unit1", e.target.value)}
-                >
-                  {availableUnits.map((unit) => (
-                    <MenuItem key={unit} value={unit}>
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={6}>
-              <Paper sx={{ p: 3, borderRadius: 4 }}>
-                <Typography fontWeight="bold" mb={2}>
-                  VALUE 2
-                </Typography>
-
-                <TextField
-                  label="Value 2"
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                  value={formData.value2}
-                  onChange={(e) => handleChange("value2", e.target.value)}
-                />
-
-                <TextField
-                  select
-                  label="Unit 2"
-                  fullWidth
-                  margin="normal"
-                  value={formData.unit2}
-                  onChange={(e) => handleChange("unit2", e.target.value)}
-                >
-                  {availableUnits.map((unit) => (
-                    <MenuItem key={unit} value={unit}>
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Paper>
-            </Grid>
-          </>
-        )}
-
-        {/* ARITHMETIC */}
-        {selectedAction === "ARITHMETIC" && (
-          <>
-            <Grid item xs={12} md={5}>
-              <Paper sx={{ p: 3, borderRadius: 4 }}>
-                <Typography fontWeight="bold" mb={2}>
-                  VALUE 1
-                </Typography>
-
-                <TextField
-                  label="Value 1"
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                  value={formData.value1}
-                  onChange={(e) => handleChange("value1", e.target.value)}
-                />
-
-                <TextField
-                  select
-                  label="Unit 1"
-                  fullWidth
-                  margin="normal"
-                  value={formData.unit1}
-                  onChange={(e) => handleChange("unit1", e.target.value)}
-                >
-                  {availableUnits.map((unit) => (
-                    <MenuItem key={unit} value={unit}>
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={2}>
-              <Paper
-                sx={{
-                  p: 3,
-                  borderRadius: 4,
-                  height: "100%",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <TextField
-                  select
-                  label="Operator"
-                  fullWidth
-                  value={formData.operator}
-                  onChange={(e) => handleChange("operator", e.target.value)}
-                >
-                  <MenuItem value="ADD">+</MenuItem>
-                  <MenuItem value="SUBTRACT">-</MenuItem>
-                  <MenuItem value="DIVIDE">/</MenuItem>
-                </TextField>
-              </Paper>
-            </Grid>
-
-            <Grid item xs={12} md={5}>
-              <Paper sx={{ p: 3, borderRadius: 4 }}>
-                <Typography fontWeight="bold" mb={2}>
-                  VALUE 2
-                </Typography>
-
-                <TextField
-                  label="Value 2"
-                  type="number"
-                  fullWidth
-                  margin="normal"
-                  value={formData.value2}
-                  onChange={(e) => handleChange("value2", e.target.value)}
-                />
-
-                <TextField
-                  select
-                  label="Unit 2"
-                  fullWidth
-                  margin="normal"
-                  value={formData.unit2}
-                  onChange={(e) => handleChange("unit2", e.target.value)}
-                >
-                  {availableUnits.map((unit) => (
-                    <MenuItem key={unit} value={unit}>
-                      {unit}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Paper>
-            </Grid>
-          </>
-        )}
-      </Grid>
-
-      {/* SECTION 4 — SUBMIT */}
-      <Box display="flex" justifyContent="center" mb={4}>
-        <Button
-          variant="contained"
-          size="large"
-          onClick={handleSubmit}
-          disabled={loading}
+        <Paper
+          elevation={0}
           sx={{
-            px: 5,
-            py: 1.5,
-            borderRadius: 3,
-            fontWeight: "bold",
+            p: { xs: 2, md: 2.6 },
+            borderRadius: "30px",
+            border: "1px solid rgba(123, 139, 211, 0.28)",
+            background: "rgba(8,12,27,0.62)",
+            minHeight: 118,
           }}
         >
-          {loading ? (
-            <CircularProgress size={24} color="inherit" />
-          ) : (
-            "Calculate"
-          )}
-        </Button>
+          <Typography
+            variant="subtitle2"
+            color="rgba(195,208,255,0.75)"
+            sx={{ letterSpacing: "0.08em" }}
+            mb={1}
+          >
+            RESULT
+          </Typography>
+
+          <Divider sx={{ mb: 2, borderColor: "rgba(124,140,206,0.22)" }} />
+
+          {renderResult()}
+        </Paper>
       </Box>
-
-      {/* RESULT */}
-      <Paper
-        sx={{
-          p: 4,
-          borderRadius: 4,
-          borderLeft: "6px solid #00d4b8",
-        }}
-      >
-        <Typography variant="subtitle2" color="text.secondary" mb={1}>
-          RESULT
-        </Typography>
-
-        <Divider sx={{ mb: 2 }} />
-
-        {renderResult()}
-      </Paper>
 
       <Snackbar
         open={snackbar.open}
@@ -673,3 +786,34 @@ function Dashboard() {
 }
 
 export default Dashboard;
+
+const fieldSx = {
+  mt: 0.85,
+  "& .MuiInputBase-root": {
+    color: "#f2f6ff",
+    height: 42,
+    borderRadius: "18px",
+    background: "linear-gradient(90deg, rgba(41,46,67,0.52), rgba(29,34,52,0.58))",
+    fontSize: "0.86rem",
+    "& fieldset": {
+      borderColor: "rgba(138,150,206,0.24)",
+    },
+    "&:hover fieldset": {
+      borderColor: "rgba(165,178,236,0.44)",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "rgba(151,172,255,0.68)",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: alpha("#dce5ff", 0.74),
+    fontSize: "0.86rem",
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "#dde6ff",
+  },
+  "& .MuiOutlinedInput-input::placeholder": {
+    color: "rgba(215,223,255,0.7)",
+    opacity: 1,
+  },
+};

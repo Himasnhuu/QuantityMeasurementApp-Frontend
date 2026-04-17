@@ -3,30 +3,30 @@ import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Dashboard from "../pages/Dashboard";
 import OAuthSuccess from "../pages/OAuthSuccess";
+import ProtectedRoute from "../components/ProtectedRoute";
 import MainLayout from "../components/MainLayout";
-
-// ✅ ADD THIS
-import HistoryPage from "../pages/HistoryPage";
+import History from "../pages/History";
 
 function AppRoutes() {
   return (
     <BrowserRouter>
       <Routes>
-
         {/* Public Routes */}
-        <Route path="/login" element={<Login />} />
+        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/oauth-success" element={<OAuthSuccess />} />
 
-        {/* App Layout (Navbar always visible) */}
-        <Route element={<MainLayout />}>
-          <Route path="/" element={<Dashboard />} />
+        {/* Protected Routes with Shared Layout */}
+        <Route
+          element={
+            <ProtectedRoute>
+              <MainLayout />
+            </ProtectedRoute>
+          }
+        >
           <Route path="/dashboard" element={<Dashboard />} />
-
-          {/* ✅ ADD HISTORY ROUTE */}
-          <Route path="/history" element={<HistoryPage />} />
+          <Route path="/history" element={<History />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );

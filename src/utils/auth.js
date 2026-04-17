@@ -14,15 +14,6 @@ export const isAuthenticated = () => {
   return !!getToken();
 };
 
-// ✅ ADD THIS
-export const getUser = () => {
-  const token = getToken();
-  if (!token) return null;
+export const getMode = () => localStorage.getItem("mode");
 
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.sub || payload.email || null; // flexible
-  } catch (e) {
-    return null;
-  }
-};
+export const isGuest = () => getMode() === "GUEST";

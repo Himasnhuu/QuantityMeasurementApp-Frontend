@@ -1,82 +1,93 @@
 import { AppBar, Toolbar, Typography, Button, Box } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import LoginIcon from "@mui/icons-material/Login";
 import HistoryIcon from "@mui/icons-material/History";
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import LoginIcon from "@mui/icons-material/Login";
 import { useNavigate } from "react-router-dom";
-import { removeToken, getToken } from "../utils/auth";
-
-// ✅ Extract user from JWT
-const getUser = () => {
-  const token = getToken();
-  if (!token) return null;
-
-  try {
-    const payload = JSON.parse(atob(token.split(".")[1]));
-    return payload.sub || payload.email || null;
-  } catch (e) {
-    return null;
-  }
-};
+import { isGuest, removeToken } from "../utils/auth";
 
 function Navbar() {
   const navigate = useNavigate();
 
-  const user = getUser();
-  const isLoggedIn = !!user;
-
   const handleLogout = () => {
     removeToken();
+    localStorage.removeItem("mode"); // clear guest mode if any
     navigate("/");
-  };
-
-  const handleLogin = () => {
-    navigate("/login");
-  };
-
-  const handleDashboard = () => {
-    navigate("/");
-  };
-
-  const handleHistory = () => {
-    navigate("/history");
   };
 
   return (
-    <AppBar position="static" elevation={3}>
-      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
-        
+    <AppBar
+      position="sticky"
+      elevation={0}
+      sx={{
+        bgcolor: "rgba(4, 8, 21, 0.96)",
+        borderBottom: "1px solid rgba(132, 147, 210, 0.2)",
+        backdropFilter: "blur(6px)",
+      }}
+    >
+      <Toolbar
+        sx={{
+          minHeight: "72px !important",
+          display: "flex",
+          justifyContent: "space-between",
+          px: { xs: 2, md: 3 },
+        }}
+      >
         {/* App Title */}
         <Typography
-          variant="h6"
-          sx={{ fontWeight: "bold", letterSpacing: 0.5 }}
+          variant="h5"
+          sx={{
+            fontWeight: 700,
+            letterSpacing: 0.1,
+            color: "#edf2ff",
+            fontSize: { xs: "1.35rem", md: "1.55rem" },
+          }}
         >
-          Quantity Measurement App
+          Quantity Measurement
         </Typography>
 
-        {/* Right Section */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-          
-          {/* 👤 User Email */}
-          {isLoggedIn && (
-            <Typography variant="body1">
-              {user}
-            </Typography>
-          )}
-
-          {/* 🔹 Navigation Buttons (only when logged in) */}
-          {isLoggedIn && (
+        {/* Right Side Buttons */}
+        <Box>
+          {isGuest() ? (
+            // 👤 Guest Mode → Show Login Button
+            <Button
+              variant="outlined"
+              color="inherit"
+              startIcon={<LoginIcon />}
+              onClick={() => {
+                localStorage.removeItem("mode"); // exit guest mode
+                navigate("/");
+              }}
+              sx={{
+                borderRadius: "999px",
+                px: 2,
+                borderColor: "rgba(166, 178, 230, 0.64)",
+                color: "#f1f5ff",
+                "&:hover": {
+                  borderColor: "rgba(201, 211, 255, 0.95)",
+                  backgroundColor: "rgba(255,255,255,0.08)",
+                },
+              }}
+            >
+              Login
+            </Button>
+          ) : (
+            // 🔐 Logged-in Mode → Show Dashboard + History + Logout
             <>
               <Button
                 variant="outlined"
                 color="inherit"
                 startIcon={<DashboardIcon />}
-                onClick={handleDashboard}
+                onClick={() => navigate("/dashboard")}
                 sx={{
-                  borderColor: "white",
+                  borderRadius: "999px",
+                  px: 2,
+                  borderColor: "rgba(166, 178, 230, 0.64)",
+                  color: "#f1f5ff",
+                  mr: 1.2,
                   "&:hover": {
-                    borderColor: "white",
-                    backgroundColor: "rgba(255,255,255,0.1)",
+                    borderColor: "rgba(201, 211, 255, 0.95)",
+                    backgroundColor: "rgba(255,255,255,0.08)",
                   },
                 }}
               >
@@ -87,53 +98,41 @@ function Navbar() {
                 variant="outlined"
                 color="inherit"
                 startIcon={<HistoryIcon />}
-                onClick={handleHistory}
+                onClick={() => navigate("/history")}
                 sx={{
-                  borderColor: "white",
+                  borderRadius: "999px",
+                  px: 2,
+                  borderColor: "rgba(166, 178, 230, 0.64)",
+                  color: "#f1f5ff",
+                  mr: 1.2,
                   "&:hover": {
-                    borderColor: "white",
-                    backgroundColor: "rgba(255,255,255,0.1)",
+                    borderColor: "rgba(201, 211, 255, 0.95)",
+                    backgroundColor: "rgba(255,255,255,0.08)",
                   },
                 }}
               >
                 History
               </Button>
-            </>
-          )}
 
-          {/* 🔐 Login / Logout */}
-          {isLoggedIn ? (
-            <Button
-              variant="outlined"
-              color="inherit"
-              startIcon={<LogoutIcon />}
-              onClick={handleLogout}
-              sx={{
-                borderColor: "white",
-                "&:hover": {
-                  borderColor: "white",
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                },
-              }}
-            >
-              Logout
-            </Button>
-          ) : (
-            <Button
-              variant="outlined"
-              color="inherit"
-              startIcon={<LoginIcon />}
-              onClick={handleLogin}
-              sx={{
-                borderColor: "white",
-                "&:hover": {
-                  borderColor: "white",
-                  backgroundColor: "rgba(255,255,255,0.1)",
-                },
-              }}
-            >
-              Login
-            </Button>
+              <Button
+                variant="outlined"
+                color="inherit"
+                startIcon={<LogoutIcon />}
+                onClick={handleLogout}
+                sx={{
+                  borderRadius: "999px",
+                  px: 2,
+                  borderColor: "rgba(166, 178, 230, 0.64)",
+                  color: "#f1f5ff",
+                  "&:hover": {
+                    borderColor: "rgba(201, 211, 255, 0.95)",
+                    backgroundColor: "rgba(255,255,255,0.08)",
+                  },
+                }}
+              >
+                Logout
+              </Button>
+            </>
           )}
         </Box>
       </Toolbar>
